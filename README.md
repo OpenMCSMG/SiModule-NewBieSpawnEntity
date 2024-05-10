@@ -1,7 +1,7 @@
-# Si模块互游开发 预设模板
+# 待开发
+已生成仓库！
 
 使用方法是
-
 
 1.修改 settings.gradle.kts的root name
 
