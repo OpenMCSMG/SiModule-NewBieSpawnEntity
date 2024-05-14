@@ -13,4 +13,19 @@
 6. [ ] `/es2 save`
 7. [ ] `/es2 reload`
 
+# 模块接口 
+
+包`cn.cyanbukkit.entityspawn2` 下的 `GameHandle`
+
+```kotlin
+@Mode("1")
+fun start(team: String, name: String, user: String, amount: Int = 1) {}
+```
+`team` 配置里的队伍名字
+`name` 实体名字
+`user` 观众名字
+`amount` 数量
+
+
+
 
