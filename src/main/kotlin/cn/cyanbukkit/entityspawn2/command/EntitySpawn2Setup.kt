@@ -1,10 +1,15 @@
 package cn.cyanbukkit.entityspawn2.command
 
 import cn.cyanbukkit.entityspawn2.cyanlib.launcher.CyanPluginLauncher.cyanPlugin
+import cn.cyanbukkit.entityspawn2.listener.EntityListener
+import org.bukkit.Material
+import org.bukkit.block.Block
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import org.bukkit.event.Listener
+import org.bukkit.inventory.ItemStack
 
 object EntitySpawn2Setup : Command(
     "entityspawn2",
@@ -85,7 +90,7 @@ object EntitySpawn2Setup : Command(
             }
 
             "setlocation" -> { // 设置实体的位置
-                if (args.size != 6) {
+                if (args.size != 2) {
                     sender.sendMessage("§c参数不足")
                     return true
                 }
@@ -122,7 +127,7 @@ object EntitySpawn2Setup : Command(
             }
 
             "walkadd" -> { // 设置实体的行走路径
-                if (args.size != 3) {
+                if (args.size != 2) {
                     sender.sendMessage("§c参数不足")
                     return true
                 }
@@ -137,6 +142,21 @@ object EntitySpawn2Setup : Command(
                 has.add("${l.world!!.name},${l.x},${l.y},${l.z},${l.yaw},${l.pitch}")
                 cyanPlugin.mobConfig.set("$team.$entityName.WalkTarget", has)
                 sender.sendMessage("§a设置成功记得保存 /es2 save")
+            }
+
+            "givetools" -> {
+                giveTools(sender)
+            }
+
+            "setRegion" -> {
+                cyanPlugin.config.set("Room.Pos1", "${pos1.world.name},${pos1.x},${pos1.y},${pos1.z}")
+                cyanPlugin.config.set("Room.Pos2", "${pos1.world.name},${pos1.x},${pos1.y},${pos1.z}")
+                sender.sendMessage("§a设置成功 请保存")
+            }
+
+            "setSpawn" -> {
+                cyanPlugin.config.set("Spawn", "${sender.world.name},${sender.location.x},${sender.location.y},${sender.location.z},${sender.location.yaw},${sender.location.pitch}")
+                sender.sendMessage("§a设置成功 请保存")
             }
 
             "save" -> {
@@ -157,6 +177,24 @@ object EntitySpawn2Setup : Command(
         return true
     }
 
+    lateinit var pos1 : Block
+    lateinit var pos2 : Block
+
+    private val interactListener = object : Listener {
+
+    }
+
+    private fun giveTools(sender: Player) {
+        val item = ItemStack(Material.BLAZE_ROD)
+        val meta = item.itemMeta
+        meta?.setDisplayName("§6绑图工具")
+        item.itemMeta = meta
+        sender.inventory.addItem(item)
+        sender.sendMessage("§a给予成功")
+        // 注册临时监听
+        cyanPlugin.server.pluginManager.registerEvents(EntityListener, cyanPlugin)
+    }
+
 
     override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String> {
         // 根据参数长度 如果是第一个
@@ -165,6 +203,9 @@ object EntitySpawn2Setup : Command(
             1 -> {
                 list.add("reload")
                 list.add("create")
+                list.add("givetools")
+                list.add("setRegion")
+                list.add("setSpawn")
                 list.add("setModelData")
                 list.add("setlocation")
                 list.add("spawnmode")
@@ -172,6 +213,7 @@ object EntitySpawn2Setup : Command(
                 list.add("set")
                 list.add("remove")
             }
+
             2 -> {
                 when (args[0]) {
                     "setModelData" -> {
@@ -187,11 +229,6 @@ object EntitySpawn2Setup : Command(
                         list.add("10")
                     }
 
-                    "spawnmode" -> {
-                        list.add("fixed")
-                        list.add("region")
-                        list.add("follow|x|y|z")
-                    }
 
                     "create" -> {
                         list.add("红")
@@ -199,13 +236,22 @@ object EntitySpawn2Setup : Command(
                     }
                 }
             }
+
             3 -> {
                 when (args[0]) {
                     "create" -> {
                         list.add("输入名称")
                     }
+
+
+                    "spawnmode" -> {
+                        list.add("fixed")
+                        list.add("region")
+                        list.add("follow|x|y|z")
+                    }
                 }
             }
+
             4 -> {
                 when (args[0]) {
                     "create" -> { // 把所有实体名称都加进去
@@ -215,6 +261,7 @@ object EntitySpawn2Setup : Command(
                     }
                 }
             }
+
             5 -> {
                 when (args[0]) {
                     "create" -> {
@@ -227,12 +274,15 @@ object EntitySpawn2Setup : Command(
     }
 
 
-    private fun Player.sendHelp() {
+    fun Player.sendHelp() {
         sendMessage("§6/entityspawn2 reload §7- 重载配置文件")
-        sendMessage("§6/entityspawn2 create <红/蓝> <Entity Name> <实体类型> <生命值> §7- 创建实体")
-        sendMessage("§6/entityspawn2 setModelData §7- 设置实体的模型数据")
-        sendMessage("§6/entityspawn2 setlocation §7- 设置实体的位置")
-        sendMessage("§6/entityspawn2 spawnmode §7- 设置实体的生成模式")
+        sendMessage("§6/entityspawn2 givetools §7- 绑图工具")
+        sendMessage("§6/entityspawn2 create <红/蓝> <实体名字> <实体类型> <生命值> §7- 创建实体")
+        sendMessage("§6/entityspawn2 setRegion §7- 设置区域")
+        sendMessage("§6/entityspawn2 setSpawn §7- 设置出生点")
+        sendMessage("§6/entityspawn2 setModelData <实体名字> §7- 设置实体的模型数据")
+        sendMessage("§6/entityspawn2 setlocation <实体名字> §7- 设置实体的位置")
+        sendMessage("§6/entityspawn2 spawnmode <实体名字> <模式> §7- 设置实体的生成模式")
         sendMessage("§6/entityspawn2 walkadd §7- 设置实体的行走路径")
         sendMessage("§6/entityspawn2 save §7- 设置实体的行走路径")
         sendMessage("§6/entityspawn2 reload §7- 设置实体的行走路径")

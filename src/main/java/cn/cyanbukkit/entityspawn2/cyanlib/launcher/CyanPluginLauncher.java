@@ -4,6 +4,7 @@ import cn.cyanbukkit.entityspawn2.SpawnEntity2Data;
 import cn.cyanbukkit.entityspawn2.command.EntitySpawn2Setup;
 import cn.cyanbukkit.entityspawn2.command.ModeEntry;
 import cn.cyanbukkit.entityspawn2.cyanlib.loader.KotlinBootstrap;
+import cn.cyanbukkit.entityspawn2.listener.EntityListener;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -117,7 +118,12 @@ public class CyanPluginLauncher extends JavaPlugin {
         saveDefaultConfig();
         registerCommand(ModeEntry.INSTANCE);
         registerCommand(EntitySpawn2Setup.INSTANCE);
-        SpawnEntity2Data.INSTANCE.onload();
+        getServer().getPluginManager().registerEvents(EntityListener.INSTANCE, cyanPlugin);
+        if (!config.getBoolean("Setup")) {
+            SpawnEntity2Data.INSTANCE.onload();
+        } else {
+            getLogger().info("插件配置未配置请配置");
+        }
     }
 
     @Override

@@ -65,9 +65,14 @@ class AIMoveAndAttack(
                     val entities = liveEntity.getNearbyEntities(10.0, 10.0, 10.0)
                     for (entity in entities) {
                         if (entity is LivingEntity) {
-                            if (entity is Player) {
-                                return
+                            if (entity is Player) continue
+                            val mate = if (entity.hasMetadata("team")) {
+                                entity.getMetadata("team")[0]
+                            } else {
+                                null
                             }
+                            if (mate == null) continue
+                            if (mate.value().toString() == entity.getMetadata("team")[0].value().toString()) continue
                             attackEntity(attackEntity!!)
                             return
                         }
