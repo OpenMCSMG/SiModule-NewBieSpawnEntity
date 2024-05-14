@@ -1,0 +1,6 @@
+Room:
+  Pos1: "0,0,0"
+  Pos2: "0,0,0"
+Setup: true # 设置模式 左下角会一堆简洁的教程
+Display: "%team% | %name_2%" # 显示观众名字前2个字
+Player: "CyanBukkit"

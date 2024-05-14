@@ -1,15 +1,16 @@
-val funcName = "putfunname"
+val funcName = "entityspawn2"
 val group = "cn.cyanbukkit.${funcName}"
 val version = "0.1"
 val mainPlugin = "SiModuleGame"
 
 bukkit {
     name = rootProject.name
-    description = "put fun name here"
-    authors = listOf("Your Name")
+    description = "我的世界第二代实体对战系列 类似于兵临城下 第一代是2022年哦~"
+    authors = listOf("CyanBukkit")
     website = "https://cyanbukkit.cn"
     main = "${group}.cyanlib.launcher.CyanPluginLauncher"
     loadBefore = listOf(mainPlugin)
+    apiVersion = "1.18"
 }
 
 plugins {
@@ -24,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0")
     compileOnly(fileTree("libs") { include("*.jar") })
 

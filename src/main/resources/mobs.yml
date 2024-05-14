@@ -1,0 +1,19 @@
+## 指令Mode执行后从这里找到尸体名字
+#红:
+#  1:
+#    Type: ZOMBIE
+#    ModelData: 10 # 不支持低版本
+#    Location: "world,0,0,0,0,0"
+#    Health: 50
+#    WalkTarget: []
+#    SpawnMode: ""
+#蓝:
+#  1:
+#    Type: SKELETON
+#    ModelData: 10 # 不支持低版本
+#    Location: "world,0,0,0,0,0"
+#    Health: 50
+#    WalkTarget: []
+#    SpawnMode: ""
+#
+#

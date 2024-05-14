@@ -1,1 +1,1 @@
-rootProject.name = "SiModule-xxxxxx"
+rootProject.name = "SiModule-NewBieSpawnEntity"
